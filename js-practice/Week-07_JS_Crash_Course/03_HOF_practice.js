@@ -7,15 +7,17 @@ let salesData = [
   { product: 'Keyboards', price: 2000 },
 ];
 
-let totalSales = salesData.reduce((acc, item) => acc + item.price, 0); // using reduce
+// let totalSales = salesData.reduce((acc, item) => acc + item.price, 0); // using reduce
+
+const totalSales = salesData.reduce((sales, item) => {
+  return sales + item.price
+}, 0)
 
 // totalSales = 0; // using for loop
 
-// for (let item = 0; item < salesData.length; item++) {
-//   totalSales = totalSales + salesData[item].price;
-// }
 
-// console.log(totalSales);
+
+// console.log("Total sales :- ", totalSales);
 
 // Ques 2
 
@@ -53,16 +55,11 @@ let userActivity = [
   { user: 'Jack', activityCount: 33 },
 ];
 
-// using for and if else
-// let mostActivityCountedUser = []
+const mostActiveUsers = userActivity.reduce((maxUser, user) => {
+  return user.activityCount > maxUser.activityCount ? user : maxUser
+})
 
-// console.log(mostActivityCountedUser)
-
-// using map
-
-let mostActivityCountedUser = userActivity.reduce((maxUser, user) =>
-  user.activityCount > maxUser.activityCount ? user : maxUser
-);
+// console.log(mostActiveUsers);
 
 /// if not understand then try DRY run method (or chatgpt to dry run it)
 
@@ -88,18 +85,102 @@ let expenses = [
   { description: 'School Books', amount: 80, category: 'Education' },
 ];
 
-let expenseReport = expenses.reduce(
-  (report, expense) => {
-    report[expense.category] = report[expense.category] + expense.amount;
-    // report[expense.category] = (report[expense.category] || 0) + expense.amount // for dynamic data calculation
-    return report;
-  },
-  { Food: 0, Utilities: 0, Education: 0 }
-);
+// const expenseReport = expenses.reduce((report, expense) => {
+//   report[expense.category] += expense.amount // its hardcoded attempt 
+//   return report
+// }, { Food: 0, Utilities: 0, Education: 0 })
+
+/** Explaination
+ * in line 89, here we use spuare bracket notation instead of dot notation for accessing object property bcoz here we want dynamic property
+ * we cant be able to directly use return on line 91 bcoz, then it passes an hardcoded value of 50, but we want full accumulator 
+ */
+
+const expenseReport = expenses.reduce((report, expense) => {
+  report[expense.category] = (report[expense.category] || 0) + expense.amount // its dynamic attempt
+  return report
+}, {})
+// ---------- Code explaination DRY run
+// Initial report = {}
+
+// ───────────────
+// 1️⃣ Groceries → Food (50)
+// ───────────────
+// report["Food"] = (undefined || 0) + 50
+// => report = { Food: 50 }
+
+// ───────────────
+// 2️⃣ Electricity Bill → Utilities (100)
+// ───────────────
+// report["Utilities"] = (undefined || 0) + 100
+// => report = { Food: 50, Utilities: 100 }
+
+// ───────────────
+// 3️⃣ Dinner → Food (30)
+// ───────────────
+// report["Food"] = (50 || 0) + 30
+// => report = { Food: 80, Utilities: 100 }
+
+// ───────────────
+// 4️⃣ Internet Bill → Utilities (50)
+// ───────────────
+// report["Utilities"] = (100 || 0) + 50
+// => report = { Food: 80, Utilities: 150 }
+
+// ───────────────
+// 5️⃣ Travel Costs → Utilities (80)
+// ───────────────
+// report["Utilities"] = (150 || 0) + 80
+// => report = { Food: 80, Utilities: 230 }
+
+// ───────────────
+// 6️⃣ School Fees → Education (200)
+// ───────────────
+// report["Education"] = (undefined || 0) + 200
+// => report = { Food: 80, Utilities: 230, Education: 200 }
+
+// ───────────────
+// 7️⃣ School Books → Education (80)
+// ───────────────
+// report["Education"] = (200 || 0) + 80
+// => report = { Food: 80, Utilities: 230, Education: 280 }
+
+// ───────────────
+// ✅ Final Output:
+// ───────────────
+// expenseReport = {
+//   Food: 80,
+//   Utilities: 230,
+//   Education: 280
+// }
+// 🧭 Logical Flow Summary:
+// pgsql
+// Copy code
+//         ┌────────────┐
+//         │ expenses[] │
+//         └─────┬──────┘
+//               ↓
+//       ┌────────────────┐
+//       │ reduce() starts │
+//       └────────────────┘
+//               ↓
+//       ┌──────────────────────────┐
+//       │ for each expense object  │
+//       │ add to its category sum  │
+//       └──────────────────────────┘
+//               ↓
+//       ┌────────────────────┐
+//       │ return report obj  │
+//       └────────────────────┘
+//               ↓
+//   ✅ Combined category totals
+
+
+
 
 // console.log('Your Expense Report :', expenseReport);
 
-// Ques 5
+
+// Ques 5 :- give all tasks which was not completed and sort them too on basis of priority
 
 let tasks = [
   { description: 'Write report', completed: false, priority: 2 },
@@ -107,32 +188,29 @@ let tasks = [
   { description: 'Prepare presentation', completed: false, priority: 1 },
 ];
 
-let incompleteTasks = tasks
-  .filter((task) => !task.completed)
-  .sort((a, b) => a.priority - b.priority);
+const pendingSortedTasks = tasks
+  .filter((task) => task.completed === false)
+  .sort((a, b) => a.priority - b.priority)
 
-// console.log(incompleteTasks);
+// console.log("Incomplete and Sorted Tasks :- ", pendingSortedTasks);
 
-// Ques 6
+// Ques 6 :- average movie ratings
 
 let movieRatings = [
   { title: 'Movie A', ratings: [4, 5, 3] },
   { title: 'Movie B', ratings: [5, 5, 4] },
-  { title: 'Movie C', ratings: [3, 4, 2] },
+  { title: 'Movie C', ratings: [3, 4, 2, 6] },
   { title: 'Movie D', ratings: [2, 5, 1] },
-  { title: 'Movie E', ratings: [7, 5, 6] },
+  { title: 'Movie E', ratings: [7, 5, 6, 6] },
 ];
 
-let avgRatingsOfMovie = movieRatings.map((movie) => {
-  let total = movie.ratings.reduce((sum, rating) => sum + rating, 0);
-  let avg = total / movie.ratings.length;
+// pick a movie -> calc avg rating -> add new prop in movie obj named avgRating
 
-  return { title: movie.title, averageRating: avg.toFixed(2) };
-});
+const avgRatingOfMovies = movieRatings.map((movie) => {
+  const totalOfAllRating = movie.ratings.reduce((totalRating, rating) => totalRating + rating, 0)
+  const avgRating = totalOfAllRating / movie.ratings.length
+  return Object.assign({}, movie, { avgRating: avgRating.toFixed(2) })
+})
 
-console.log(avgRatingsOfMovie);
-
-// Ques 7
-
-
-
+console.log("Average rating of the movies :- ", avgRatingOfMovies);
+ 
