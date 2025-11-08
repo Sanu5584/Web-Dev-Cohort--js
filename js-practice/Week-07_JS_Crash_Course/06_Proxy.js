@@ -79,3 +79,4 @@ console.log("Updated OG Arr: ", exampleArr);
 console.log("Updated Proxied Arr: ", proxiedArr);
 
 //! WHY we use new keyword for initialising proxy in js
+//* Watch lec 4 of js interiew prep bundle of chaicode cohort for async - sync better understanding
