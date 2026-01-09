@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Sanidhya --- DOM practice project</h1>
+    <button id="theme-button">Dark Mode</button>
+</body>
+<script>
+    function backgroundColorChanger(color) {
+        document.body.style.backgroundColor = color
+    }
+
+    const h1 = document.querySelector("h1")
+    const themeButton = document.querySelector("#theme-button")
+    themeButton.addEventListener("click", function () {
+        console.log(document.body.style.backgroundColor);
+        const currentColor = document.body.style.backgroundColor
+        if ((currentColor === "white" || !currentColor)) {
+            backgroundColorChanger("black")
+            themeButton.innerText = "Light Mode"
+        } else {
+            backgroundColorChanger("white")
+            themeButton.innerText = "Dark Mode"
+        }
+    })
+</script>
+
+</html>

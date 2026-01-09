@@ -23,7 +23,7 @@ if (!Array.prototype.myForEach) {
         callback(contextArr[i], i, contextArr);
       }
     }
-  };
+  }; 
 }
 
 // using custom forEach

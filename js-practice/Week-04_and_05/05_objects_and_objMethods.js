@@ -62,7 +62,7 @@ console.log(users);
 
 // Object.entries() is a method that returns an array of key-value pairs from an object. Each entry is represented as an array [key, value].
 
-// console.log(Object.entries(discordUser));
+console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', Object.entries(discordUser));
 
 // fromEntries method
 
